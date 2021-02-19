@@ -1,5 +1,6 @@
 package se.edu.inclass;
 
+import org.w3c.dom.ls.LSOutput;
 import se.edu.inclass.data.DataManager;
 import se.edu.inclass.task.Deadline;
 import se.edu.inclass.task.Task;
@@ -23,8 +24,10 @@ public class Main {
         printDeadlines(tasksData);
 
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
-        printDeadlineWithStream(tasksData);
-        printData(filterTasksByString(tasksData, "11"));
+        printData(tasksData);
+        printDataWithStreams(tasksData);
+        System.out.println("no of deadlines:" + countDeadlineWithStreams(tasksData));
+
     }
 
     private static int countDeadlines(ArrayList<Task> tasksData) {
@@ -49,13 +52,25 @@ public class Main {
                 System.out.println(t);
             }
         }
+
     }
 
-    public static void printDeadlineWithStream(ArrayList<Task> tasksData) {
+    public static void printDataWithStreams(ArrayList<Task> tasksData) {
+        tasksData.stream()
+                .forEach(System.out::println);
+    }
+
+    public static void printDeadlineWithStreams(ArrayList<Task> tasksData) {
         tasksData.stream()
                 .filter((t) -> t instanceof Deadline)
                 .sorted((a, b) -> a.getDescription().toLowerCase().compareTo(b.getDescription().toLowerCase()))
                 .forEach(System.out::println);
+    }
+    public static int countDeadlineWithStreams(ArrayList<Task> tasksData) {
+        int count = (int) tasksData.stream()
+                .filter( (t) -> t instanceof Deadline)
+                .count();
+        return count;
     }
     public static ArrayList<Task> filterTasksByString(ArrayList<Task> tasks, String filterString) {
         ArrayList<Task> filteredList = (ArrayList<Task>) tasks.stream()
