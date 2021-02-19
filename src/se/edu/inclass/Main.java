@@ -1,5 +1,6 @@
 package se.edu.inclass;
 
+import org.w3c.dom.ls.LSOutput;
 import se.edu.inclass.data.DataManager;
 import se.edu.inclass.task.Deadline;
 import se.edu.inclass.task.Task;
@@ -20,6 +21,9 @@ public class Main {
         printDeadlines(tasksData);
 
         System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
+        printData(tasksData);
+        printDataWithStreams(tasksData);
+        System.out.println("no of deadlines:" + countDeadlineWithStreams(tasksData));
 
     }
 
@@ -45,5 +49,24 @@ public class Main {
                 System.out.println(t);
             }
         }
+
+    }
+
+    public static void printDataWithStreams(ArrayList<Task> tasksData) {
+        tasksData.stream()
+                .forEach(System.out::println);
+    }
+
+    public static void printDeadlineWithStreams(ArrayList<Task> tasksData) {
+        tasksData.stream()
+                .filter( (t) -> t instanceof Deadline)
+                .forEach(System.out::println);
+    }
+
+    public static int countDeadlineWithStreams(ArrayList<Task> tasksData) {
+        int count = (int) tasksData.stream()
+                .filter( (t) -> t instanceof Deadline)
+                .count();
+        return count;
     }
 }
